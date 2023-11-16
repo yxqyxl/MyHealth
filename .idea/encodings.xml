@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/health_parent/health_backend/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/health_parent/health_backend/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/health_parent/health_common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/health_parent/health_common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/health_parent/health_dao/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/health_parent/health_dao/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/health_parent/health_domain/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/health_parent/health_domain/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/health_parent/health_freemarker_demo/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/health_parent/health_freemarker_demo/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/health_parent/health_mobile/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/health_parent/health_mobile/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/health_parent/health_service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/health_parent/health_service/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

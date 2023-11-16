@@ -1,0 +1,44 @@
+server:
+  port: 90
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/health?serverTimezone=UTC
+    username: root
+    password: 123456
+  redis:
+    port: 6379
+    host: 127.0.0.1
+
+  freemarker:
+    template-loader-path: classpath:/templates
+    cache: false
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: true
+    expose-session-attributes: true
+    request-context-attribute: request
+    suffix: .ftl
+
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.ymsd.pojo
+  configuration:
+    log-impl: org.apache.ibatis.logging.log4j.Log4jImpl
+
+#pagehelper分页插件配置 以下属性不加也可以实现分页功能
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+out_put_path: E:\\projects\\projectCode\\MyHealth\\health_parent\\health_mobile\\src\\main\\resources\\static\\pages\\
+report_put_path: E:\\projects\\projectCode\\MyHealth\\health_parent\\health_backend\\src\\main\\resources\\static\\template\\
+
+
+swagger:
+  enable:true

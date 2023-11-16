@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymsd.dao.ISetMealDao">
+    <insert id="addSetmeal" parameterType="com.ymsd.pojo.Setmeal">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into t_setmeal(name,code,helpCode,sex,age,price,remark,attention,img,status)
+        values
+        (#{name},#{code},#{helpCode},#{sex},#{age},#{price},#{remark},#{attention},#{img},#{status})
+    </insert>
+
+    <insert id="setSetmealAndCheckGroup" parameterType="java.util.HashMap">
+        insert into t_setmeal_checkgroup(setmeal_id,checkgroup_id)
+        values
+            (#{setmeal_id},#{checkgroup_id})
+    </insert>
+
+    <select id="findPage" parameterType="java.lang.String" resultType="com.ymsd.pojo.Setmeal">
+        select * from t_setmeal where 1=1 and status = 1
+        <if test="value != null and value.length > 0">
+            and code like '%${value}%' or name like '%${value}%' or helpCode like '%${value}%'
+        </if>
+    </select>
+
+<!--    <delete id="deleteById" parameterType="java.lang.Integer">-->
+<!--        delete-->
+<!--        from t_setmeal-->
+<!--        where id = #{setmealId}-->
+<!--    </delete>-->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        update t_setmeal set status = 0 where id = #{setmealId}
+    </delete>
+    <delete id="deleteSetmealIdAndCheckGroupId" parameterType="java.lang.Integer">
+        delete
+        from t_setmeal_checkgroup
+        where setmeal_id = #{setmealId}
+    </delete>
+
+    <select id="findBySetmealId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select checkgroup_id from t_setmeal_checkgroup  where setmeal_id = #{setmealId}
+    </select>
+
+
+    <update id="updateSetmeal" parameterType="com.ymsd.pojo.Setmeal">
+        update t_setmeal
+        <set>
+            <if test=" code != null">code = #{code},</if>
+            <if test=" name != null"> name = #{name},</if>
+            <if test=" helpCode != null">helpCode = #{helpCode},</if>
+            <if test=" sex != null">sex = #{sex}</if>
+            <if test=" remark != null">remark = #{remark},</if>
+            <if test=" attention != null">attention = #{attention},</if>
+            <if test=" age != null">age = #{age},</if>
+            <if test=" price != null">price = #{price},</if>
+            <if test=" img != null">img = #{img}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getFindAll" resultType="com.ymsd.pojo.Setmeal">
+        select * from t_setmeal
+    </select>
+
+<!--    <resultMap id="setmealMap" type="com.ymsd.pojo.Setmeal">-->
+<!--        <id column="id" property="id"/>-->
+<!--        <result column="name" property="name"/>-->
+<!--        <result column="code" property="code"/>-->
+<!--        <result column="helpCode" property="helpCode"/>-->
+<!--        <result column="sex" property="sex"/>-->
+<!--        <result column="age" property="age"/>-->
+<!--        <result column="price" property="price"/>-->
+<!--        <result column="remark" property="remark"/>-->
+<!--        <result column="attention" property="attention"/>-->
+<!--        <result column="img" property="img"/>-->
+<!--        <result column="status" property="status"/>-->
+<!--        <collection property="checkGroups"  column="id" ofType="com.ymsd.pojo.CheckGroup" fetchType="lazy" select="com.ymsd.dao.ICheckGroupDao.findBySetmealId">-->
+<!--            <id column="id" property="id"/>-->
+<!--            <result column="code" property="code"/>-->
+<!--            <result column="name" property="name"/>-->
+<!--            <result column="helpCode" property="helpCode"/>-->
+<!--            <result column="sex" property="sex"/>-->
+<!--            <result column="remark" property="remark"/>-->
+<!--            <result column="attention" property="attention"/>-->
+<!--            <collection property="checkItems"  column="id" ofType="com.ymsd.pojo.CheckItem" fetchType="lazy" select="com.ymsd.dao.ICheckItemDao.findByCheckGroupId">-->
+<!--                <id column="id" property="id"/>-->
+<!--                <result column="code" property="code"/>-->
+<!--                <result column="name" property="name"/>-->
+<!--                <result column="sex" property="sex"/>-->
+<!--                <result column="age" property="age"/>-->
+<!--                <result column="price" property="price"/>-->
+<!--                <result column="type" property="type"/>-->
+<!--                <result column="remark" property="remark"/>-->
+<!--                <result column="attention" property="attention"/>-->
+<!--            </collection>-->
+<!--        </collection>-->
+<!--    </resultMap>-->
+<!--    -->
+<!--    <select id="findById" resultMap="setmealMap" parameterType="java.lang.Integer">-->
+<!--        SELECT-->
+<!--            t_setmeal.id, t_setmeal.name, t_setmeal.code, t_setmeal.helpCode, t_setmeal.sex,-->
+<!--            t_setmeal.age, t_setmeal.price, t_setmeal.remark, t_setmeal.attention, t_setmeal.img,-->
+<!--            t_setmeal.status,-->
+<!--            t_checkgroup.id AS checkGroupId, t_checkgroup.code AS checkGroupCode,-->
+<!--            t_checkgroup.name AS checkGroupName, t_checkgroup.helpCode AS checkGroupHelpCode,-->
+<!--            t_checkgroup.sex AS checkGroupSex, t_checkgroup.remark AS checkGroupRemark,-->
+<!--            t_checkgroup.attention AS checkGroupAttention,-->
+<!--            t_checkitem.id AS checkItemId, t_checkitem.code AS checkItemCode,-->
+<!--            t_checkitem.name AS checkItemName, t_checkitem.sex AS checkItemSex,-->
+<!--            t_checkitem.age AS checkItemAge, t_checkitem.price AS checkItemPrice,-->
+<!--            t_checkitem.type AS checkItemType, t_checkitem.remark AS checkItemRemark,-->
+<!--            t_checkitem.attention AS checkItemAttention-->
+<!--        FROM-->
+<!--            t_setmeal-->
+<!--                INNER JOIN t_setmeal_checkgroup ON t_setmeal.id = t_setmeal_checkgroup.setmeal_id-->
+<!--                INNER JOIN t_checkgroup ON t_checkgroup.id = t_setmeal_checkgroup.checkgroup_id-->
+<!--                INNER JOIN t_checkgroup_checkitem ON t_checkgroup_checkitem.checkgroup_id = t_checkgroup.id-->
+<!--                INNER JOIN t_checkitem ON t_checkitem.id = t_checkgroup_checkitem.checkitem_id-->
+<!--        WHERE-->
+<!--            t_setmeal_checkgroup.setmeal_id = #{id};-->
+<!--    </select>-->
+
+
+    <resultMap id="setmealResultMap" type="Setmeal">
+        <id property="id" column="setmeal_id"/>
+        <result property="name" column="setmeal_name"/>
+        <result property="code" column="setmeal_code"/>
+        <result property="helpCode" column="setmeal_helpCode"/>
+        <result property="sex" column="setmeal_sex"/>
+        <result property="age" column="setmeal_age"/>
+        <result property="price" column="setmeal_price"/>
+        <result property="remark" column="setmeal_remark"/>
+        <result property="attention" column="setmeal_attention"/>
+        <result property="img" column="setmeal_img"/>
+        <result property="status" column="setmeal_status"/>
+        <collection property="checkGroups" ofType="CheckGroup" resultMap="checkGroupResultMap"/>
+    </resultMap>
+
+    <!-- CheckGroup的resultMap -->
+    <resultMap id="checkGroupResultMap" type="CheckGroup">
+        <id property="id" column="checkgroup_id"/>
+        <result property="name" column="checkgroup_name"/>
+        <result property="code" column="checkgroup_code"/>
+        <result property="helpCode" column="checkgroup_helpCode"/>
+        <result property="sex" column="checkgroup_sex"/>
+        <result property="remark" column="checkgroup_remark"/>
+        <result property="attention" column="checkgroup_attention"/>
+        <collection property="checkItems" ofType="CheckItem" resultMap="checkItemResultMap"/>
+    </resultMap>
+
+    <!-- CheckItem的resultMap -->
+    <resultMap id="checkItemResultMap" type="CheckItem">
+        <id property="id" column="checkitem_id"/>
+        <id property="code" column="checkitem_code"/>
+        <result property="name" column="checkitem_name"/>
+        <result property="sex" column="checkitem_sex"/>
+        <result property="age" column="checkitem_age"/>
+        <result property="price" column="checkitem_price"/>
+        <result property="type" column="checkitem_type"/>
+        <result property="remark" column="checkitem_remark"/>
+        <result property="attention" column="checkitem_attention"/>
+    </resultMap>
+
+    <!-- 查询Setmeal及其关联的CheckGroup和CheckItem -->
+    <select id="findById" resultMap="setmealResultMap" parameterType="integer">
+        select s.id        as setmeal_id,
+               s.name      as setmeal_name,
+               s.code      as setmeal_code,
+               s.helpCode  as setmeal_helpCode,
+               s.sex       as setmeal_sex,
+               s.age       as setmeal_age,
+               s.price     as setmeal_price,
+               s.remark    as setmeal_remark,
+               s.attention as setmeal_attention,
+               s.img       as setmeal_img,
+               s.status    as setmeal_status,
+               g.id        as checkgroup_id,
+               g.code      as checkgroup_code,
+               g.name      as checkgroup_name,
+               g.helpCode  as checkgroup_helpCode,
+               g.sex       as checkgroup_sex,
+               g.remark    as checkgroup_remark,
+               g.attention as checkgroup_attention,
+               i.id        as checkitem_id,
+               i.code      as checkitem_code,
+               i.name      as checkitem_name,
+               i.sex       as checkitem_sex,
+               i.age       as checkitem_age,
+               i.price     as checkitem_price,
+               i.type      as checkitem_type,
+               i.remark    as checkitem_remark,
+               i.attention as checkitem_attention
+        from t_setmeal s
+                 left join t_setmeal_checkgroup sc on s.id = sc.setmeal_id
+                 left join t_checkgroup g on sc.checkgroup_id = g.id
+                 left join t_checkgroup_checkitem gc on g.id = gc.checkgroup_id
+                 left join t_checkitem i on gc.checkitem_id = i.id
+        where s.id = #{id}
+    </select>
+
+    <select id="findSetmealById" resultType="com.ymsd.pojo.Setmeal">
+        select * from t_setmeal where id = #{setmealId}
+    </select>
+
+    <select id="findSetmealCount" resultType="java.util.Map">
+        SELECT
+            s.name,
+            COUNT(o.id)
+            AS value
+        FROM
+            t_order o ,
+            t_setmeal s
+        WHERE
+            o.setmeal_id = s.id
+        GROUP BY
+            s.name
+    </select>
+</mapper>

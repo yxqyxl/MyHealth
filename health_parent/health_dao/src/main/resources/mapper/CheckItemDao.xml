@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymsd.dao.ICheckItemDao">
+    <insert id="addCheckItem" parameterType="com.ymsd.pojo.CheckItem">
+        insert into t_checkitem(code, name, sex, age, price, type, remark, attention)
+        values (#{code}, #{name}, #{sex}, #{age}, #{price}, #{type}, #{remark}, #{attention})
+    </insert>
+    <select id="findPage" parameterType="java.lang.String" resultType="com.ymsd.pojo.CheckItem">
+        select * from t_checkitem
+        <if test="value != null and value.length > 0">
+            where code like '%${value}%' or name like '%${value}%'
+        </if>
+    </select>
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete
+        from t_checkitem
+        where id = #{id}
+    </delete>
+
+    <update id="updateCheckItem" parameterType="com.ymsd.pojo.CheckItem">
+        update t_checkitem
+        <set>
+            <if test=" code != null">code = #{code},</if>
+            <if test=" name != null">name = #{name},</if>
+            <if test=" sex != null">sex = #{sex},</if>
+            <if test=" age != null">age = #{age},</if>
+            <if test=" price != null">price = #{price},</if>
+            <if test=" type != null">type = #{type},</if>
+            <if test=" remark != null">remark = #{remark},</if>
+            <if test=" attention != null">attention = #{attention}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <select id="findAll" resultType="com.ymsd.pojo.CheckItem">
+        select *
+        from t_checkitem
+    </select>
+
+    <resultMap id="checkItemMap" type="com.ymsd.pojo.CheckItem">
+        <id column="id" property="id"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="sex" property="sex"/>
+        <result column="age" property="age"/>
+        <result column="price" property="price"/>
+        <result column="type" property="type"/>
+        <result column="remark" property="remark"/>
+        <result column="attention" property="attention"/>
+    </resultMap>
+
+    <select id="findByCheckGroupId" resultMap="checkItemMap" parameterType="java.lang.Integer">
+        select *
+        from t_checkitem
+        where id in (select checkitem_id from t_checkgroup_checkitem where checkgroup_id = #{checkGroupId})
+    </select>
+
+</mapper>
+

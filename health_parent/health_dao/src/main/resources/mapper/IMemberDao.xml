@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymsd.dao.IMemberDao">
+   <select id="checkIdCardAndOrderDate" resultType="com.ymsd.pojo.Member" parameterType="java.lang.String">
+        select * from t_member where idCard = #{idCard}
+   </select>
+    <insert id="addMember" parameterType="com.ymsd.pojo.Member">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into t_member(name,sex,idcard,phonenumber,regtime)
+        values (#{name},#{sex},#{idCard},#{phoneNumber},#{regTime})
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.ymsd.pojo.Member">
+        select * from t_member where id = #{memberId}
+    </select>
+
+    <select id="findMemberCountByMonth" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(id) from t_member where regTime BETWEEN #{startTime} and  #{endTime}
+    </select>
+
+    <select id="findCount" resultType="java.lang.Integer">
+        select count(id) from t_member
+    </select>
+
+    <select id="findThisWeekMemberCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(id) from t_member where regTime BETWEEN #{startTime} and  #{endTime}
+    </select>
+
+    <select id="thisMonthNewMemberCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(id) from t_member where regTime BETWEEN #{startTime} and  #{endTime}
+    </select>
+</mapper>
+

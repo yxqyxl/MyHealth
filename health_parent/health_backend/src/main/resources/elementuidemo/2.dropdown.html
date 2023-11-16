@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>下拉菜单</title>
+    <script src="./js/vue.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="./css/index.css"/>
+    <!-- 引入组件库 -->
+    <script src="./js/index.js"></script>
+
+    <style>
+        .el-dropdown-link {
+            cursor: pointer;
+            color: #409EFF;
+        }
+        .el-icon-arrow-down {
+            font-size: 12px;
+        }
+        .demonstration {
+            display: block;
+            color: #8492a6;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <el-dropdown split-button="true"  type="primary" ><!--@command="handleCommand"-->
+            默认尺寸
+            <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item  @command="fun1">黄金糕</el-dropdown-item>
+                <el-dropdown-item divided>狮子头</el-dropdown-item>
+                <el-dropdown-item divided>螺蛳粉</el-dropdown-item>
+                <el-dropdown-item divided>双皮奶</el-dropdown-item>
+                <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
+
+        <el-dropdown size="medium" split-button type="primary" trigger="click">
+            中等尺寸
+            <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item icon="el-icon-plus">黄金糕</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-circle-plus">狮子头</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-circle-plus-outline">螺蛳粉</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-check">双皮奶</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-circle-check">蚵仔煎</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
+
+        <el-dropdown size="small" split-button type="primary">
+            小型尺寸
+            <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>黄金糕</el-dropdown-item>
+                <el-dropdown-item>狮子头</el-dropdown-item>
+                <el-dropdown-item>螺蛳粉</el-dropdown-item>
+                <el-dropdown-item>双皮奶</el-dropdown-item>
+                <el-dropdown-item>蚵仔煎</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
+
+        <el-dropdown size="mini" split-button type="primary">
+            超小尺寸
+            <el-dropdown-menu slot="dropdown" >
+                <el-dropdown-item>黄金糕</el-dropdown-item>
+                <el-dropdown-item>狮子头</el-dropdown-item>
+                <el-dropdown-item>螺蛳粉</el-dropdown-item>
+                <el-dropdown-item>双皮奶</el-dropdown-item>
+                <el-dropdown-item>蚵仔煎</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
+    </div>
+    <script>
+
+        new Vue({
+            el: "#app",
+            methods:{
+                fun1() {
+                    alert("111");
+                },
+                handleCommand(command) {
+                    this.$message('click on item ' + command);
+                }
+            }
+        })
+    </script>
+</body>
+</html>

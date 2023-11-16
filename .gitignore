@@ -1,0 +1,8 @@
+# Project exclude paths
+/health_parent/health_backend/target/
+/health_parent/health_common/target/
+/health_parent/health_dao/target/
+/health_parent/health_domain/target/
+/health_parent/health_freemarker_demo/target/
+/health_parent/health_mobile/target/
+/health_parent/health_service/target/

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymsd.dao.IOrderDao">
+    <select id="findOrder" parameterType="java.util.Map" resultType="com.ymsd.pojo.Order">
+        select * from t_order where orderDate = #{orderDate} and setmeal_id = #{setmealId} and member_id = #{memberId}
+    </select>
+    <insert id="addOrder" parameterType="com.ymsd.pojo.Order" >
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into t_order(member_id,orderDate,orderType,orderStatus,setmeal_id)
+        values (#{memberId},#{orderDate},#{orderType},#{orderStatus},#{setmealId})
+    </insert>
+
+    <resultMap id="orderMap" type="com.ymsd.pojo.Order">
+        <id column="id" property="id"/>
+        <result column="member_id" property="memberId"/>
+        <result column="orderDate" property="orderDate"/>
+        <result column="orderType" property="orderType"/>
+        <result column="orderStatus" property="orderStatus"/>
+        <result column="setmeal_id" property="setmealId"/>
+    </resultMap>
+    
+    <select id="findById" parameterType="java.lang.Integer" resultType="java.util.Map">
+        SELECT
+            t_order.orderType,
+            t_order.orderDate,
+            t_member.`name` as member,
+            t_setmeal.`name` as setmeal
+        FROM
+            t_member
+                INNER JOIN
+            t_order
+            ON
+                t_member.id = t_order.member_id
+                INNER JOIN
+            t_setmeal
+            ON
+                t_order.setmeal_id = t_setmeal.id
+        WHERE
+            t_order.id = #{id} AND
+            t_order.member_id = t_member.id AND
+            t_order.setmeal_id = t_setmeal.id
+    </select>
+
+    <select id="findTodayNewMember" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(id) from t_order where orderDate = #{nowDate}
+    </select>
+
+    <select id="findOrderCountByDate" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(id) from t_order where orderDate = #{nowDate}
+    </select>
+    <select id="findVisitCountByDate" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(id) from t_order where orderDate = #{nowDate} and orderStatus = "已到诊"
+    </select>
+
+    <select id="findOrderCountAfterDate" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(id) from t_order where orderDate >= #{value}
+    </select>
+    <select id="findVisitCountAfterDate" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(id) from t_order where orderDate >= #{value} and orderStatus = "已到诊"
+    </select>
+    <select id="findHotSetmeal" resultType="java.util.Map">
+        select s.name,count(o.id) as setmeal_count,
+               count(o.id) / (select count(id) from t_order) as proportion
+        from t_order o
+                 inner join t_setmeal s on s.id = o.setmeal_id
+        group by s.`name`
+        order by setmeal_count desc limit 0,4
+    </select>
+</mapper>

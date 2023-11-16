@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymsd.dao.IOrdersettingDao">
+
+    <insert id="importPOIOrdersetting" parameterType="com.ymsd.pojo.OrderSetting">
+        insert into t_ordersetting(orderdate,number) values (#{orderDate},#{number})
+    </insert>
+
+    <select id="findAllOrderSetting" resultType="com.ymsd.pojo.OrderSetting">
+        select * from t_ordersetting
+    </select>
+    
+    <select id="findNumberByDate" parameterType="java.lang.String" resultType="com.ymsd.pojo.OrderSetting">
+        select * from t_ordersetting where orderDate = #{orderDate}
+    </select>
+
+    <insert id="addNumberDate" parameterType="com.ymsd.pojo.OrderSetting">
+        insert into t_ordersetting(orderDate,number,reservations) values (#{orderDate},#{number},0)
+    </insert>
+
+    <update id="update" parameterType="java.util.HashMap">
+        update t_ordersetting set number = #{number} where orderDate = #{orderDate}
+    </update>
+
+
+    <insert id="update2" parameterType="java.util.HashMap">
+        <if test="oldNumber == null">
+            insert into t_ordersetting(orderDate,number) values (#{orderDate},#{number})
+        </if>
+        <if test="oldNumber != null">
+            update t_ordersetting set number = #{number} where orderDate = #{orderDate}
+        </if>
+    </insert>
+
+
+
+
+    <select id="findReservationsByDate" parameterType="java.lang.String" resultType="com.ymsd.pojo.OrderSetting">
+        SELECT reservations FROM t_ordersetting WHERE orderDate = #{orderDate}
+    </select>
+
+    <update id="updateReservations" parameterType="com.ymsd.dto.OrderSettingDTO">
+        update t_ordersetting set reservations = #{reservations},number = #{number} where orderDate = #{orderDate}
+    </update>
+
+
+</mapper>
